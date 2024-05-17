@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import '../models/quote.dart';
@@ -48,7 +50,7 @@ class QuoteProvider with ChangeNotifier {
       'X-RapidAPI-Host': 'microsoft-translator-text.p.rapidapi.com',
     };
 
-    final body = json.encode([
+    final body = jsonEncode([
       {'Text': quote.quote}
     ]);
 
