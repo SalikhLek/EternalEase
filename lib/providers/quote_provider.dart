@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:dio/dio.dart';
 import '../models/quote.dart';
 
 class QuoteProvider with ChangeNotifier {
@@ -15,17 +14,18 @@ class QuoteProvider with ChangeNotifier {
     _isFetching = true;
 
     try {
-      final url = Uri.parse('https://dummyjson.com/quotes?page=$_page&limit=10');
-      final response = await http.get(url);
+      final url = 'https://dummyjson.com/quotes?page=$_page&limit=10';
+      final response = await Dio().get(url);
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body)['quotes'];
+        final List<dynamic> data = response.data['quotes'];
         final quotes = data.map((json) => Quote.fromJson(json)).toList();
 
-        for (var quote in quotes) {
-          quote = await _translateQuote(quote, 'ru');
-          _quotes.add(quote);
-        }
+        List<Future<Quote>> translatedQuotesFutures = quotes.map((quote) => _translateQuote(quote, 'ru')).toList();
+
+        List<Quote> translatedQuotes = await Future.wait(translatedQuotesFutures);
+
+        _quotes.addAll(translatedQuotes);
         _page++;
         notifyListeners();
       } else {
@@ -40,7 +40,7 @@ class QuoteProvider with ChangeNotifier {
 
   Future<Quote> _translateQuote(Quote quote, String targetLang) async {
     final apiKey = 'f183c6e0dcmsh2d5227974ee7827p1f5693jsnc9fe1f63dde7';
-    final url = Uri.parse('https://microsoft-translator-text.p.rapidapi.com/translate?api-version=3.0&to=$targetLang');
+    final url = 'https://microsoft-translator-text.p.rapidapi.com/translate?api-version=3.0&to=$targetLang';
 
     final headers = {
       'content-type': 'application/json',
@@ -52,21 +52,22 @@ class QuoteProvider with ChangeNotifier {
       {'Text': quote.quote}
     ]);
 
-    final response = await http.post(
-      url,
-      headers: headers,
-      body: body,
-    );
+    try {
+      final response = await Dio().post(url, options: Options(headers: headers), data: body);
 
-    if (response.statusCode == 200) {
-      final translatedText = json.decode(response.body)[0]['translations'][0]['text'];
-      return Quote(
-        id: quote.id,
-        quote: translatedText,
-        author: quote.author,
-      );
-    } else {
-      throw Exception('Failed to translate quote');
+      if (response.statusCode == 200) {
+        final translatedText = response.data[0]['translations'][0]['text'];
+        return Quote(
+          id: quote.id,
+          quote: translatedText,
+          author: quote.author,
+        );
+      } else {
+        throw Exception('Failed to translate quote');
+      }
+    } catch (error) {
+      print('Error translating quote: $error');
+      return quote;  // Возвращаем исходную цитату в случае ошибки
     }
   }
 }
