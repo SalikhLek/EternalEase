@@ -20,7 +20,12 @@ class QuoteProvider with ChangeNotifier {
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body)['quotes'];
-        _quotes.addAll(data.map((json) => Quote.fromJson(json)).toList());
+        final quotes = data.map((json) => Quote.fromJson(json)).toList();
+
+        for (var quote in quotes) {
+          quote = await _translateQuote(quote, 'ru');
+          _quotes.add(quote);
+        }
         _page++;
         notifyListeners();
       } else {
@@ -30,6 +35,38 @@ class QuoteProvider with ChangeNotifier {
       print('Error fetching quotes: $error');
     } finally {
       _isFetching = false;
+    }
+  }
+
+  Future<Quote> _translateQuote(Quote quote, String targetLang) async {
+    final apiKey = 'f183c6e0dcmsh2d5227974ee7827p1f5693jsnc9fe1f63dde7';
+    final url = Uri.parse('https://microsoft-translator-text.p.rapidapi.com/translate?api-version=3.0&to=$targetLang');
+
+    final headers = {
+      'content-type': 'application/json',
+      'X-RapidAPI-Key': apiKey,
+      'X-RapidAPI-Host': 'microsoft-translator-text.p.rapidapi.com',
+    };
+
+    final body = json.encode([
+      {'Text': quote.quote}
+    ]);
+
+    final response = await http.post(
+      url,
+      headers: headers,
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      final translatedText = json.decode(response.body)[0]['translations'][0]['text'];
+      return Quote(
+        id: quote.id,
+        quote: translatedText,
+        author: quote.author,
+      );
+    } else {
+      throw Exception('Failed to translate quote');
     }
   }
 }

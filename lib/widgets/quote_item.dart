@@ -25,26 +25,35 @@ class QuoteItem extends StatelessWidget {
     final random = Random();
     final imageUrl = imageUrls[random.nextInt(imageUrls.length)];
 
-    return Card(
-      margin: EdgeInsets.all(10),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            CachedNetworkImage(
-              imageUrl: '$imageUrl&${quote.id}',
-              placeholder: (context, url) => CircularProgressIndicator(),
-              errorWidget: (context, url, error) => Icon(Icons.error),
-            ),
-            SizedBox(height: 10),
-            Text(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Цитата'),
+      ),
+      body: Column(
+        children: [
+          CachedNetworkImage(
+            imageUrl: '$imageUrl&${quote.id}',
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+            height: 300,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+          SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
               quote.quote,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
-            SizedBox(height: 5),
-            Text('- ${quote.author}', style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic)),
-          ],
-        ),
+          ),
+          SizedBox(height: 10),
+          Text(
+            '- ${quote.author}',
+            style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
+          ),
+        ],
       ),
     );
   }

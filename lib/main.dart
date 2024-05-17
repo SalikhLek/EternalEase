@@ -12,10 +12,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (ctx) => QuoteProvider()..fetchQuotes()),
+        ChangeNotifierProvider(create: (ctx) => QuoteProvider()),
       ],
       child: MaterialApp(
-        title: 'Мотивационное приложение',
+        title: 'Eternal Ease',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
