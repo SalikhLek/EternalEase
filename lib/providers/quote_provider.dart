@@ -50,7 +50,7 @@ class QuoteProvider with ChangeNotifier {
       'X-RapidAPI-Host': 'microsoft-translator-text.p.rapidapi.com',
     };
 
-    final body = json.Encode([
+    final body = jsonEncode([
       {'Text': quote.quote}
     ]);
 
