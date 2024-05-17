@@ -13,7 +13,7 @@ class QuoteItem extends StatelessWidget {
     'https://source.unsplash.com/random/800x600?sky',
     'https://source.unsplash.com/random/800x600?beach',
     'https://source.unsplash.com/random/800x600?desert',
-    'https://source.unsplash.com/random/800x600?space',
+    'https://source.unsplash.com/random/800x600?flowers',
     'https://source.unsplash.com/random/800x600?river',
     'https://source.unsplash.com/random/800x600?trees',
   ];
