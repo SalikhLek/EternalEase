@@ -12,4 +12,12 @@ class Quote {
       author: json['author'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'quote': quote,
+      'author': author,
+    };
+  }
 }
