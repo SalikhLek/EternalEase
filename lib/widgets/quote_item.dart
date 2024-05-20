@@ -9,8 +9,7 @@ class QuoteItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl = 'https://source.unsplash.com/random/800x600?sig=${quote
-        .id}'; // Генерация уникального изображения
+    final imageUrl = 'https://source.unsplash.com/random/800x600?sig=${quote.id}'; // Использование уникального параметра
 
     return Padding(
       padding: EdgeInsets.all(10),
@@ -21,8 +20,7 @@ class QuoteItem extends StatelessWidget {
           children: [
             CachedNetworkImage(
               imageUrl: imageUrl,
-              placeholder: (context, url) =>
-                  Center(child: CircularProgressIndicator()),
+              placeholder: (context, url) => Center(child: CircularProgressIndicator()),
               errorWidget: (context, url, error) => Icon(Icons.error),
               fit: BoxFit.cover,
               width: double.infinity,

@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
+            icon: Icon(Icons.self_improvement),
             label: 'Йога',
           ),
           BottomNavigationBarItem(
