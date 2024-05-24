@@ -26,7 +26,7 @@ class _QuotesScreenState extends State<QuotesScreen> {
       body: quoteProvider.quotes.isEmpty
           ? Center(child: CircularProgressIndicator())
           : PageView.builder(
-        scrollDirection: Axis.vertical, // Вертикальный скролл
+        scrollDirection: Axis.vertical,
         itemCount: quoteProvider.quotes.length,
         itemBuilder: (ctx, i) => QuoteItem(quoteProvider.quotes[i]),
         onPageChanged: (index) {

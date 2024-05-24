@@ -1,57 +1,71 @@
 import 'package:flutter/material.dart';
 import '../models/quote.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class QuoteItem extends StatelessWidget {
   final Quote quote;
+  final List<String> _imageUrls = [
+    'https://images.unsplash.com/photo-1541698444083-023c97d3f4b6',
+    'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
+    'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
+    'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
+    'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
+    'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
+    'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
+    'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
+    'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
+    'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
+  ];
 
   QuoteItem(this.quote);
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl = 'https://source.unsplash.com/random/800x600?sig=${quote.id}'; // Использование уникального параметра
+    final imageUrl = _imageUrls[quote.id % _imageUrls.length];
 
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: Card(
-        elevation: 5,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CachedNetworkImage(
-              imageUrl: imageUrl,
-              placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(imageUrl),
               fit: BoxFit.cover,
-              width: double.infinity,
-              height: 200,
             ),
-            Padding(
-              padding: EdgeInsets.all(15),
+          ),
+        ),
+        Container(
+          color: Colors.black.withOpacity(0.5),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     quote.quote,
                     style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontStyle: FontStyle.italic,
                     ),
+                    textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
                   Text(
                     '- ${quote.author}',
                     style: TextStyle(
-                      fontSize: 16,
-                      fontStyle: FontStyle.italic,
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
