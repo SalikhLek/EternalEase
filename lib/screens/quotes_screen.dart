@@ -20,20 +20,35 @@ class _QuotesScreenState extends State<QuotesScreen> {
     final quoteProvider = Provider.of<QuoteProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Цитаты'),
-      ),
-      body: quoteProvider.quotes.isEmpty
-          ? Center(child: CircularProgressIndicator())
-          : PageView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: quoteProvider.quotes.length,
-        itemBuilder: (ctx, i) => QuoteItem(quoteProvider.quotes[i]),
-        onPageChanged: (index) {
-          if (index == quoteProvider.quotes.length - 1) {
-            quoteProvider.fetchQuotes();
-          }
-        },
+      body: Stack(
+        children: [
+          // Фоновое изображение
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage('https://img1.akspic.ru/previews/3/2/6/5/3/135623/135623-temnota-elektrik-nochnoe_nebo-astronomicheskij_obekt-sinij-360x640.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          // Полупрозрачный черный слой для затемнения фона
+          Container(
+            color: Colors.black.withOpacity(0.5),
+          ),
+          // PageView для цитат
+          quoteProvider.quotes.isEmpty
+              ? Center(child: CircularProgressIndicator())
+              : PageView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: quoteProvider.quotes.length,
+            itemBuilder: (ctx, i) => QuoteItem(quoteProvider.quotes[i]),
+            onPageChanged: (index) {
+              if (index == quoteProvider.quotes.length - 1) {
+                quoteProvider.fetchQuotes();
+              }
+            },
+          ),
+        ],
       ),
     );
   }
