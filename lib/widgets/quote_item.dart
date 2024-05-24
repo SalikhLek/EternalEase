@@ -1,59 +1,56 @@
 import 'package:flutter/material.dart';
 import '../models/quote.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'dart:math';
 
 class QuoteItem extends StatelessWidget {
   final Quote quote;
-  static const List<String> imageUrls = [
-    'https://source.unsplash.com/random/800x600?nature',
-    'https://source.unsplash.com/random/800x600?forest',
-    'https://source.unsplash.com/random/800x600?water',
-    'https://source.unsplash.com/random/800x600?mountain',
-    'https://source.unsplash.com/random/800x600?sky',
-    'https://source.unsplash.com/random/800x600?beach',
-    'https://source.unsplash.com/random/800x600?desert',
-    'https://source.unsplash.com/random/800x600?flowers',
-    'https://source.unsplash.com/random/800x600?river',
-    'https://source.unsplash.com/random/800x600?trees',
-  ];
 
   QuoteItem(this.quote);
 
   @override
   Widget build(BuildContext context) {
-    final random = Random();
-    final imageUrl = imageUrls[random.nextInt(imageUrls.length)];
+    final imageUrl = 'https://source.unsplash.com/random/800x600?sig=${quote.id}'; // Использование уникального параметра
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Цитата'),
-      ),
-      body: Column(
-        children: [
-          CachedNetworkImage(
-            imageUrl: '$imageUrl&${quote.id}',
-            placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-            height: 300,
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
-          SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              quote.quote,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: Card(
+        elevation: 5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CachedNetworkImage(
+              imageUrl: imageUrl,
+              placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: 200,
             ),
-          ),
-          SizedBox(height: 10),
-          Text(
-            '- ${quote.author}',
-            style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
-          ),
-        ],
+            Padding(
+              padding: EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    quote.quote,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    '- ${quote.author}',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

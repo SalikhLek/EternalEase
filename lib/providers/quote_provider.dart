@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/quote.dart';
 
 class QuoteProvider with ChangeNotifier {
@@ -15,28 +15,41 @@ class QuoteProvider with ChangeNotifier {
     if (_isFetching) return;
     _isFetching = true;
 
-    try {
-      final url = 'https://dummyjson.com/quotes?page=$_page&limit=10';
-      final response = await Dio().get(url);
+    // Попробуем загрузить цитаты из кеша
+    final prefs = await SharedPreferences.getInstance();
+    final cachedQuotesJson = prefs.getStringList('cachedQuotes');
 
-      if (response.statusCode == 200) {
-        final List<dynamic> data = response.data['quotes'];
-        final quotes = data.map((json) => Quote.fromJson(json)).toList();
+    if (cachedQuotesJson != null) {
+      _quotes = cachedQuotesJson.map((json) => Quote.fromJson(jsonDecode(json))).toList();
+      notifyListeners();
+    } else {
+      // Если кеша нет, загружаем с сервера
+      try {
+        final url = 'https://dummyjson.com/quotes?page=$_page&limit=10';
+        final response = await Dio().get(url);
 
-        List<Future<Quote>> translatedQuotesFutures = quotes.map((quote) => _translateQuote(quote, 'ru')).toList();
+        if (response.statusCode == 200) {
+          final List<dynamic> data = response.data['quotes'];
+          final quotes = data.map((json) => Quote.fromJson(json)).toList();
 
-        List<Quote> translatedQuotes = await Future.wait(translatedQuotesFutures);
+          List<Future<Quote>> translatedQuotesFutures = quotes.map((quote) => _translateQuote(quote, 'ru')).toList();
+          List<Quote> translatedQuotes = await Future.wait(translatedQuotesFutures);
 
-        _quotes.addAll(translatedQuotes);
-        _page++;
-        notifyListeners();
-      } else {
-        throw Exception('Failed to load quotes');
+          _quotes.addAll(translatedQuotes);
+          _page++;
+
+          // Сохраняем цитаты в кеш
+          await prefs.setStringList('cachedQuotes', _quotes.map((quote) => jsonEncode(quote.toJson())).toList());
+
+          notifyListeners();
+        } else {
+          throw Exception('Failed to load quotes');
+        }
+      } catch (error) {
+        print('Error fetching quotes: $error');
+      } finally {
+        _isFetching = false;
       }
-    } catch (error) {
-      print('Error fetching quotes: $error');
-    } finally {
-      _isFetching = false;
     }
   }
 
@@ -73,3 +86,4 @@ class QuoteProvider with ChangeNotifier {
     }
   }
 }
+
