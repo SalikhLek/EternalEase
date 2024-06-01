@@ -38,15 +38,18 @@ class _QuotesScreenState extends State<QuotesScreen> {
           // PageView для цитат
           quoteProvider.quotes.isEmpty
               ? Center(child: CircularProgressIndicator())
-              : PageView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: quoteProvider.quotes.length,
-            itemBuilder: (ctx, i) => QuoteItem(quoteProvider.quotes[i]),
-            onPageChanged: (index) {
-              if (index == quoteProvider.quotes.length - 1) {
+              : NotificationListener<ScrollNotification>(
+            onNotification: (scrollInfo) {
+              if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && !quoteProvider.isFetching) {
                 quoteProvider.fetchQuotes();
               }
+              return true;
             },
+            child: PageView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: quoteProvider.quotes.length,
+              itemBuilder: (ctx, i) => QuoteItem(quoteProvider.quotes[i]),
+            ),
           ),
         ],
       ),

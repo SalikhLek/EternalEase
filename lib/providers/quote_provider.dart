@@ -9,6 +9,7 @@ class QuoteProvider with ChangeNotifier {
   bool _isFetching = false;
 
   List<Quote> get quotes => _quotes;
+  bool get isFetching => _isFetching;
 
   Future<void> fetchQuotes() async {
     if (_isFetching) return;
@@ -23,10 +24,9 @@ class QuoteProvider with ChangeNotifier {
         final quotes = data.map((json) => Quote.fromJson(json)).toList();
 
         List<Future<Quote>> translatedQuotesFutures = quotes.map((quote) => _translateQuote(quote, 'ru')).toList();
-
         List<Quote> translatedQuotes = await Future.wait(translatedQuotesFutures);
 
-        _quotes.addAll(translatedQuotes);
+        _quotes.addAll(translatedQuotes.where((quote) => !_quotes.contains(quote)));
         _page++;
         notifyListeners();
       } else {
