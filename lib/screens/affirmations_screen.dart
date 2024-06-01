@@ -5,11 +5,11 @@ class AffirmationsScreen extends StatelessWidget {
   final List<Map<String, String>> affirmations = [
     {
       'title': 'Аффирмация 1',
-      'url': 'https://www.example.com/path-to-your-audio-file1.mp3',
+      'path': 'assets/audio/affirmation1.mp3',
     },
     {
       'title': 'Аффирмация 2',
-      'url': 'https://www.example.com/path-to-your-audio-file2.mp3',
+      'path': 'assets/audio/affirmation2.mp3',
     },
     // Добавьте больше аффирмаций здесь
   ];
@@ -28,9 +28,9 @@ class AffirmationsScreen extends StatelessWidget {
             child: ListTile(
               title: Text(affirmations[index]['title']!),
               onTap: () async {
-                final audioUrl = affirmations[index]['url']!;
+                final audioPath = affirmations[index]['path']!;
                 AudioPlayer audioPlayer = AudioPlayer();
-                await audioPlayer.play(audioUrl);
+                await audioPlayer.play(audioPath, isLocal: true); // Указываем, что аудиофайл локальный
               },
             ),
           );

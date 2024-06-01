@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'affirmations_screen.dart';
+import 'productivity_screen.dart';
+import 'stress_screen.dart';
+import 'mindfulness_screen.dart';
+import 'harmony_screen.dart';
+import 'sleep_screen.dart';
 
 class MeditationScreen extends StatelessWidget {
   final List<String> categories = [
@@ -11,19 +16,40 @@ class MeditationScreen extends StatelessWidget {
     'Улучшение сна',
   ];
 
-  final Map<String, String> audioLinks = {
-    'Аффирмации': 'https://www.example.com/path-to-your-audio-file.mp3',
-    // Добавьте другие категории и ссылки, если нужно
-  };
+  void navigateToCategory(BuildContext context, String category) {
+    Widget screen;
+    switch (category) {
+      case 'Аффирмации':
+        screen = AffirmationsScreen();
+        break;
+      case 'Увеличение продуктивности':
+        screen = ProductivityScreen();
+        break;
+      case 'Снятие стресса и беспокойства':
+        screen = StressScreen();
+        break;
+      case 'Развитие осознанности':
+        screen = MindfulnessScreen();
+        break;
+      case 'Гармония и баланс':
+        screen = HarmonyScreen();
+        break;
+      case 'Улучшение сна':
+        screen = SleepScreen();
+        break;
+      default:
+        return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => screen),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Медитация'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
       body: Stack(
         children: [
           Positioned.fill(
@@ -32,31 +58,14 @@ class MeditationScreen extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          Container(
-            color: Colors.black.withOpacity(0.5),
-          ),
           ListView.builder(
             itemCount: categories.length,
             itemBuilder: (context, index) {
               return Card(
-                color: Colors.white.withOpacity(0.8),
                 margin: EdgeInsets.all(10),
                 child: ListTile(
-                  title: Text(
-                    categories[index],
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  onTap: () async {
-                    final category = categories[index];
-                    if (audioLinks.containsKey(category)) {
-                      final audioUrl = audioLinks[category]!;
-                      AudioPlayer audioPlayer = AudioPlayer();
-                      await audioPlayer.play(audioUrl);
-                    }
-                  },
+                  title: Text(categories[index]),
+                  onTap: () => navigateToCategory(context, categories[index]),
                 ),
               );
             },
