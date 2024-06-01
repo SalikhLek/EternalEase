@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class MeditationScreen extends StatelessWidget {
   final List<String> categories = [
@@ -10,9 +11,19 @@ class MeditationScreen extends StatelessWidget {
     'Улучшение сна',
   ];
 
+  final Map<String, String> audioLinks = {
+    'Аффирмации': 'https://www.example.com/path-to-your-audio-file.mp3',
+    // Добавьте другие категории и ссылки, если нужно
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Медитация'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Stack(
         children: [
           Positioned.fill(
@@ -38,8 +49,13 @@ class MeditationScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  onTap: () {
-                    // Handle category tap
+                  onTap: () async {
+                    final category = categories[index];
+                    if (audioLinks.containsKey(category)) {
+                      final audioUrl = audioLinks[category]!;
+                      AudioPlayer audioPlayer = AudioPlayer();
+                      await audioPlayer.play(audioUrl);
+                    }
                   },
                 ),
               );
