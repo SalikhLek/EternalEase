@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:flutter_sound/public/flutter_sound_player.dart';
 
 class AffirmationsScreen extends StatefulWidget {
   @override
@@ -10,26 +9,46 @@ class AffirmationsScreen extends StatefulWidget {
 class _AffirmationsScreenState extends State<AffirmationsScreen> {
   final List<Map<String, String>> affirmations = [
     {
-      'title': 'Аффирмация 1',
+      'title': 'Для избавления от страха',
       'path': 'assets/audio/affirmation1.mp3',
     },
     {
-      'title': 'Аффирмация 2',
+      'title': 'Благодарности вселенной',
       'path': 'assets/audio/affirmation2.mp3',
     },
-    // Добавьте больше аффирмаций здесь
+    {
+      'title': 'На перемены в жизни',
+      'path': 'assets/audio/affirmation3.mp3',
+    },
+    {
+      'title': 'Успокаивающие: перед сном',
+      'path': 'assets/audio/affirmation4.mp3',
+    },
+    {
+      'title': 'Для поиска работы',
+      'path': 'assets/audio/affirmation5.mp3',
+    },
+    {
+      'title': 'Для каждого дня на благополучие',
+      'path': 'assets/audio/affirmation6.mp3',
+    },
+    {
+      'title': 'На любовь: укрепление чувств',
+      'path': 'assets/audio/affirmation7.mp3',
+    }
   ];
 
   FlutterSoundPlayer _audioPlayer = FlutterSoundPlayer();
   bool _isPlaying = false;
   bool _isPaused = false;
-  double _playPosition = 0.0;
   String? _currentPath;
 
   @override
   void initState() {
     super.initState();
-    _audioPlayer.openPlayer();
+    _audioPlayer.openPlayer().then((value) {
+      setState(() {});
+    });
   }
 
   @override
@@ -53,9 +72,6 @@ class _AffirmationsScreenState extends State<AffirmationsScreen> {
       });
     } else {
       await _audioPlayer.stopPlayer();
-      setState(() {
-        _playPosition = 0.0;
-      });
       _currentPath = audioPath;
       await _audioPlayer.startPlayer(
         fromURI: audioPath,
@@ -64,18 +80,9 @@ class _AffirmationsScreenState extends State<AffirmationsScreen> {
           setState(() {
             _isPlaying = false;
             _isPaused = false;
-            _playPosition = 0.0;
           });
         },
       );
-      _audioPlayer.onProgress!.listen((event) {
-        if (event != null && event.duration != null) {
-          setState(() {
-            _playPosition = event.position.inMilliseconds /
-                event.duration!.inMilliseconds;
-          });
-        }
-      });
       setState(() {
         _isPlaying = true;
         _isPaused = false;
@@ -105,11 +112,6 @@ class _AffirmationsScreenState extends State<AffirmationsScreen> {
                     : Icons.play_arrow),
                 onPressed: () => _togglePlayback(audioPath),
               ),
-              subtitle: _isPlaying && _currentPath == audioPath
-                  ? LinearProgressIndicator(
-                value: _playPosition,
-              )
-                  : null,
             ),
           );
         },
