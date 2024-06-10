@@ -96,25 +96,49 @@ class _AffirmationsScreenState extends State<AffirmationsScreen> {
       appBar: AppBar(
         title: Text('Аффирмации'),
       ),
-      body: ListView.builder(
-        itemCount: affirmations.length,
-        itemBuilder: (context, index) {
-          final title = affirmations[index]['title']!;
-          final audioPath = affirmations[index]['path']!;
-          return Card(
-            margin: EdgeInsets.all(10),
-            child: ListTile(
-              leading: Icon(Icons.music_note),
-              title: Text(title),
-              trailing: IconButton(
-                icon: Icon(_isPlaying && _currentPath == audioPath
-                    ? Icons.pause
-                    : Icons.play_arrow),
-                onPressed: () => _togglePlayback(audioPath),
-              ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(
+              'https://img1.akspic.ru/previews/3/2/6/5/3/135623/135623-temnota-elektrik-nochnoe_nebo-astronomicheskij_obekt-sinij-360x640.jpg',
             ),
-          );
-        },
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: ListView.builder(
+          itemCount: affirmations.length,
+          itemBuilder: (context, index) {
+            final title = affirmations[index]['title']!;
+            final audioPath = affirmations[index]['path']!;
+            return Card(
+              color: Colors.white.withOpacity(0.8),
+              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: ListTile(
+                leading: Icon(Icons.music_note, color: Colors.blueAccent),
+                title: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                trailing: IconButton(
+                  icon: Icon(
+                    _isPlaying && _currentPath == audioPath
+                        ? Icons.pause_circle_filled
+                        : Icons.play_circle_filled,
+                    color: Colors.blueAccent,
+                    size: 30,
+                  ),
+                  onPressed: () => _togglePlayback(audioPath),
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

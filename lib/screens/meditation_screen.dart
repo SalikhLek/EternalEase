@@ -1,76 +1,48 @@
 import 'package:flutter/material.dart';
-import 'affirmations_screen.dart';
-import 'productivity_screen.dart';
-import 'stress_screen.dart';
-import 'mindfulness_screen.dart';
-import 'harmony_screen.dart';
-import 'sleep_screen.dart';
+import 'package:gpt_dipl/screens/affirmations_screen.dart' as affirmations;
+import 'package:gpt_dipl/screens/productivity_screen.dart' as productivity;
+import 'package:gpt_dipl/screens/stress_screen.dart' as stress;
+import 'package:gpt_dipl/screens/mindfulness_screen.dart' as mindfulness;
+import 'package:gpt_dipl/screens/sleep_screen.dart' as sleep;
 
-class MeditationScreen extends StatelessWidget {
-  final List<String> categories = [
-    'Аффирмации',
-    'Увеличение продуктивности',
-    'Снятие стресса и беспокойства',
-    'Развитие осознанности',
-    'Гармония и баланс',
-    'Улучшение сна',
-  ];
+class MeditationScreen extends StatefulWidget {
+  @override
+  _MeditationScreenState createState() => _MeditationScreenState();
+}
 
-  void navigateToCategory(BuildContext context, String category) {
-    Widget screen;
-    switch (category) {
-      case 'Аффирмации':
-        screen = AffirmationsScreen();
-        break;
-      case 'Увеличение продуктивности':
-        screen = ProductivityScreen();
-        break;
-      case 'Снятие стресса и беспокойства':
-        screen = StressScreen();
-        break;
-      case 'Развитие осознанности':
-        screen = MindfulnessScreen();
-        break;
-      case 'Гармония и баланс':
-        screen = HarmonyScreen();
-        break;
-      case 'Улучшение сна':
-        screen = SleepScreen();
-        break;
-      default:
-        return;
-    }
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => screen),
-    );
-  }
-
+class _MeditationScreenState extends State<MeditationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: ListView(
         children: [
-          Positioned.fill(
-            child: Image.network(
-              'https://img1.akspic.ru/previews/3/2/6/5/3/135623/135623-temnota-elektrik-nochnoe_nebo-astronomicheskij_obekt-sinij-360x640.jpg',
-              fit: BoxFit.cover,
-            ),
+          _buildCategoryItem(
+            context,
+            'Аффирмации',
+            affirmations.AffirmationsScreen(),
           ),
-          ListView.builder(
-            itemCount: categories.length,
-            itemBuilder: (context, index) {
-              return Card(
-                margin: EdgeInsets.all(10),
-                child: ListTile(
-                  title: Text(categories[index]),
-                  onTap: () => navigateToCategory(context, categories[index]),
-                ),
-              );
-            },
+          _buildCategoryItem(
+            context,
+            'Звуки природы',
+            productivity.ProductivityScreen(),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildCategoryItem(BuildContext context, String title, Widget screen) {
+    return Card(
+      margin: EdgeInsets.all(10),
+      child: ListTile(
+        title: Text(title),
+        trailing: Icon(Icons.arrow_forward),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => screen),
+          );
+        },
       ),
     );
   }
