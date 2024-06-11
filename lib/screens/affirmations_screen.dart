@@ -94,7 +94,25 @@ class _AffirmationsScreenState extends State<AffirmationsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Аффирмации'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.lightBlueAccent, Colors.teal],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+        title: Text(
+          'Аффирмации',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        elevation: 10.0,
+        centerTitle: true,
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -103,6 +121,7 @@ class _AffirmationsScreenState extends State<AffirmationsScreen> {
               'https://img1.akspic.ru/previews/3/2/6/5/3/135623/135623-temnota-elektrik-nochnoe_nebo-astronomicheskij_obekt-sinij-360x640.jpg',
             ),
             fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop),
           ),
         ),
         child: ListView.builder(
@@ -110,30 +129,34 @@ class _AffirmationsScreenState extends State<AffirmationsScreen> {
           itemBuilder: (context, index) {
             final title = affirmations[index]['title']!;
             final audioPath = affirmations[index]['path']!;
-            return Card(
-              color: Colors.white.withOpacity(0.8),
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: ListTile(
-                leading: Icon(Icons.music_note, color: Colors.blueAccent),
-                title: Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: Card(
+                color: Colors.white.withOpacity(0.9),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                trailing: IconButton(
-                  icon: Icon(
-                    _isPlaying && _currentPath == audioPath
-                        ? Icons.pause_circle_filled
-                        : Icons.play_circle_filled,
-                    color: Colors.blueAccent,
-                    size: 30,
+                elevation: 5,
+                child: ListTile(
+                  leading: Icon(Icons.music_note, color: Colors.teal),
+                  title: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.teal,
+                    ),
                   ),
-                  onPressed: () => _togglePlayback(audioPath),
+                  trailing: IconButton(
+                    icon: Icon(
+                      _isPlaying && _currentPath == audioPath
+                          ? Icons.pause_circle_filled
+                          : Icons.play_circle_filled,
+                      color: Colors.teal,
+                      size: 30,
+                    ),
+                    onPressed: () => _togglePlayback(audioPath),
+                  ),
                 ),
               ),
             );
