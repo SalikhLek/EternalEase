@@ -1,76 +1,99 @@
 import 'package:flutter/material.dart';
-import 'package:gpt_dipl/screens/affirmations_screen.dart' as affirmations;
-import 'package:gpt_dipl/screens/productivity_screen.dart' as productivity;
-import 'package:gpt_dipl/screens/stress_screen.dart' as stress;
-import 'package:gpt_dipl/screens/mindfulness_screen.dart' as mindfulness;
-import 'package:gpt_dipl/screens/sleep_screen.dart' as sleep;
+import 'affirmations_screen.dart';
+import 'nature_screen.dart';
 
-class MeditationScreen extends StatefulWidget {
-  @override
-  _MeditationScreenState createState() => _MeditationScreenState();
-}
+class MeditationScreen extends StatelessWidget {
+  final List<Map<String, dynamic>> categories = [
+    {
+      'title': 'Аффирмации',
+      'screen': AffirmationsScreen(),
+      'image': 'assets/images/affirmation.png', // замените на путь к вашему изображению
+    },
+    {
+      'title': 'Увеличение продуктивности',
+      'screen': NatureScreen(),
+      'image': 'assets/images/nature.png', // замените на путь к вашему изображению
+    },
+  ];
 
-class _MeditationScreenState extends State<MeditationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.lightBlueAccent, Colors.teal],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+        title: Text(
+          'Медитации',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        elevation: 10.0,
+        centerTitle: true,
+      ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/nature_background.jpg'), // Замените на путь к вашему фоновому изображению
+            image: NetworkImage(
+              'https://img1.akspic.ru/previews/3/2/6/5/3/135623/135623-temnota-elektrik-nochnoe_nebo-astronomicheskij_obekt-sinij-360x640.jpg',
+            ),
             fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.5), BlendMode.dstATop),
           ),
         ),
-        child: ListView(
-          children: [
-            buildCategoryItem(
-              context,
-              'Аффирмации',
-              affirmations.AffirmationsScreen(),
-              Icons.self_improvement,
-            ),
-            buildCategoryItem(
-              context,
-              'Звуки природы',
-              productivity.ProductivityScreen(),
-              Icons.nature,
-            ),
-          ],
+        child: ListView.builder(
+          itemCount: categories.length,
+          itemBuilder: (context, index) {
+            final title = categories[index]['title']!;
+            final screen = categories[index]['screen']!;
+            final image = categories[index]['image']!;
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+              child: Card(
+                color: Colors.white.withOpacity(0.9),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                elevation: 5,
+                child: ListTile(
+                  contentPadding: EdgeInsets.all(16.0),
+                  leading: Container(
+                    width: 80,
+                    height: 80,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset(image, fit: BoxFit.cover),
+                    ),
+                  ),
+                  title: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.teal,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => screen),
+                    );
+                  },
+                ),
+              ),
+            );
+          },
         ),
-      ),
-    );
-  }
-
-  Widget buildCategoryItem(
-      BuildContext context, String title, Widget screen, IconData icon) {
-    return Card(
-      margin: EdgeInsets.all(10),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      child: ListTile(
-        leading: Icon(
-          icon,
-          color: Colors.teal,
-        ),
-        title: Text(
-          title,
-          style: TextStyle(
-            fontFamily: 'Poppins',
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        trailing: Icon(
-          Icons.arrow_forward_ios,
-          color: Colors.teal,
-        ),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => screen),
-          );
-        },
       ),
     );
   }

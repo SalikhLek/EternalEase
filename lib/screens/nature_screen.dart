@@ -1,36 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
-class ProductivityScreen extends StatefulWidget {
+class NatureScreen extends StatefulWidget {
   @override
-  _ProductivityScreenState createState() => _ProductivityScreenState();
+  _NatureScreenState createState() => _NatureScreenState();
 }
 
-class _ProductivityScreenState extends State<ProductivityScreen> {
-  final List<Map<String, String>> productivityTracks = [
+class _NatureScreenState extends State<NatureScreen> {
+  final List<Map<String, String>> natureTracks = [
     {
       'title': 'Утренняя медитация',
-      'path': 'assets/audio/productivity1.mp3',
+      'path': 'assets/audio/nature1.mp3',
     },
     {
       'title': 'Фокус на работе',
-      'path': 'assets/audio/productivity2.mp3',
+      'path': 'assets/audio/nature2.mp3',
     },
     {
       'title': 'Энергия для дня',
-      'path': 'assets/audio/productivity3.mp3',
+      'path': 'assets/audio/nature3.mp3',
     },
     {
       'title': 'Расслабление после работы',
-      'path': 'assets/audio/productivity4.mp3',
+      'path': 'assets/audio/nature4.mp3',
     },
     {
       'title': 'Вечерняя медитация',
-      'path': 'assets/audio/productivity5.mp3',
+      'path': 'assets/audio/nature5.mp3',
     },
     {
       'title': 'Мотивация на успех',
-      'path': 'assets/audio/productivity6.mp3',
+      'path': 'assets/audio/nature6.mp3',
     },
   ];
 
@@ -90,7 +90,7 @@ class _ProductivityScreenState extends State<ProductivityScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Увеличение продуктивности'),
+        title: Text('Звуки природы'),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -102,10 +102,10 @@ class _ProductivityScreenState extends State<ProductivityScreen> {
           ),
         ),
         child: ListView.builder(
-          itemCount: productivityTracks.length,
+          itemCount: natureTracks.length,
           itemBuilder: (context, index) {
-            final title = productivityTracks[index]['title']!;
-            final audioPath = productivityTracks[index]['path']!;
+            final title = natureTracks[index]['title']!;
+            final audioPath = natureTracks[index]['path']!;
             return Card(
               color: Colors.white.withOpacity(0.8),
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
