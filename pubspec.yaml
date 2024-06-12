@@ -63,6 +63,8 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/audio/affirmation1.mp3
+    - assets/images/affirmation.png
+    - assets/images/nature.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see

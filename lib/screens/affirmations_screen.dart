@@ -93,75 +93,104 @@ class _AffirmationsScreenState extends State<AffirmationsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.lightBlueAccent, Colors.teal],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-        ),
-        title: Text(
-          'Аффирмации',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        elevation: 10.0,
-        centerTitle: true,
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(
-              'https://img1.akspic.ru/previews/3/2/6/5/3/135623/135623-temnota-elektrik-nochnoe_nebo-astronomicheskij_obekt-sinij-360x640.jpg',
-            ),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop),
-          ),
-        ),
-        child: ListView.builder(
-          itemCount: affirmations.length,
-          itemBuilder: (context, index) {
-            final title = affirmations[index]['title']!;
-            final audioPath = affirmations[index]['path']!;
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: Card(
-                color: Colors.white.withOpacity(0.9),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(
+                  'https://img1.akspic.ru/previews/3/2/6/5/3/135623/135623-temnota-elektrik-nochnoe_nebo-astronomicheskij_obekt-sinij-360x640.jpg',
                 ),
-                elevation: 5,
-                child: ListTile(
-                  leading: Icon(Icons.music_note, color: Colors.teal),
-                  title: Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.teal,
-                    ),
-                  ),
-                  trailing: IconButton(
-                    icon: Icon(
-                      _isPlaying && _currentPath == audioPath
-                          ? Icons.pause_circle_filled
-                          : Icons.play_circle_filled,
-                      color: Colors.teal,
-                      size: 30,
-                    ),
-                    onPressed: () => _togglePlayback(audioPath),
-                  ),
-                ),
+                fit: BoxFit.cover,
               ),
-            );
-          },
-        ),
+            ),
+          ),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: MediaQuery.of(context).padding.top),
+                SizedBox(height: 20),
+                SizedBox(
+                  height: 300,
+                  width: double.infinity,
+                  child: Center(
+                    child: Image.asset(
+                      'assets/images/affirmation.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    'Здесь вы можете прослушать мотивационные аффирмации и настроиться на позитивный лад.',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(height: 20),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: affirmations.length,
+                  itemBuilder: (context, index) {
+                    final title = affirmations[index]['title']!;
+                    final audioPath = affirmations[index]['path']!;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                      child: Card(
+                        color: Colors.white.withOpacity(0.9),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        elevation: 5,
+                        child: ListTile(
+                          leading: Icon(Icons.music_note, color: Colors.blue.shade700),
+                          title: Text(
+                            title,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.blue.shade700,
+                            ),
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(
+                              _isPlaying && _currentPath == audioPath
+                                  ? Icons.pause_circle_filled
+                                  : Icons.play_circle_filled,
+                              color: Colors.blue.shade700,
+                              size: 30,
+                            ),
+                            onPressed: () => _togglePlayback(audioPath),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: AppBar(
+              title: Text(
+                'Аффирмации',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              iconTheme: IconThemeData(color: Colors.white),
+            ),
+          ),
+        ],
       ),
     );
   }
