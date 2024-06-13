@@ -9,28 +9,64 @@ class NatureScreen extends StatefulWidget {
 class _NatureScreenState extends State<NatureScreen> {
   final List<Map<String, String>> natureTracks = [
     {
-      'title': 'Утренняя медитация',
+      'title': 'Спокойствие',
       'path': 'assets/audio/nature1.mp3',
     },
     {
-      'title': 'Фокус на работе',
+      'title': 'Радужный рассвет',
       'path': 'assets/audio/nature2.mp3',
     },
     {
-      'title': 'Энергия для дня',
+      'title': 'Бриз с горизонта',
       'path': 'assets/audio/nature3.mp3',
     },
     {
-      'title': 'Расслабление после работы',
+      'title': 'Безмятежность у реки',
       'path': 'assets/audio/nature4.mp3',
     },
     {
-      'title': 'Вечерняя медитация',
+      'title': 'Скалистый шум',
       'path': 'assets/audio/nature5.mp3',
     },
     {
-      'title': 'Мотивация на успех',
+      'title': 'Система центавра',
       'path': 'assets/audio/nature6.mp3',
+    },
+    {
+      'title': 'Капли в пещере',
+      'path': 'assets/audio/nature7.mp3',
+    },
+    {
+      'title': 'Море',
+      'path': 'assets/audio/nature8.mp3',
+    },
+    {
+      'title': 'Хром',
+      'path': 'assets/audio/nature9.mp3',
+    },
+    {
+      'title': 'Импульс',
+      'path': 'assets/audio/nature10.mp3',
+    },
+    {
+      'title': 'Сканирование',
+      'path': 'assets/audio/nature11.mp3',
+    },
+    {
+      'title': 'Прибой',
+      'path': 'assets/audio/nature12.mp3',
+    },
+    {
+      'title': 'Бинауральные ритмы',
+      'path': 'assets/audio/nature13.mp3',
+    },
+    {
+      'title': 'Песня звезд',
+      'path': 'assets/audio/nature14.mp3',
+    },
+    {
+      'title': 'Ветер с дождем',
+      'path': 'assets/audio/nature15.mp3',
     },
   ];
 
@@ -89,52 +125,104 @@ class _NatureScreenState extends State<NatureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Звуки природы'),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(
-              'https://img1.akspic.ru/previews/3/2/6/5/3/135623/135623-temnota-elektrik-nochnoe_nebo-astronomicheskij_obekt-sinij-360x640.jpg',
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(
+                  'https://img1.akspic.ru/previews/3/2/6/5/3/135623/135623-temnota-elektrik-nochnoe_nebo-astronomicheskij_obekt-sinij-360x640.jpg',
+                ),
+                fit: BoxFit.cover,
+              ),
             ),
-            fit: BoxFit.cover,
           ),
-        ),
-        child: ListView.builder(
-          itemCount: natureTracks.length,
-          itemBuilder: (context, index) {
-            final title = natureTracks[index]['title']!;
-            final audioPath = natureTracks[index]['path']!;
-            return Card(
-              color: Colors.white.withOpacity(0.8),
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: ListTile(
-                leading: Icon(Icons.music_note, color: Colors.blueAccent),
-                title: Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: MediaQuery.of(context).padding.top),
+                SizedBox(height: 20),
+                SizedBox(
+                  height: 300,
+                  width: double.infinity,
+                  child: Center(
+                    child: Image.asset(
+                      'assets/images/nature.png', // Используйте нужное изображение
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
-                trailing: IconButton(
-                  icon: Icon(
-                    _isPlaying && _currentPath == audioPath
-                        ? Icons.pause_circle_filled
-                        : Icons.play_circle_filled,
-                    color: Colors.blueAccent,
-                    size: 30,
+                SizedBox(height: 20),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    'Здесь вы можете слушать звуки природы и наслаждаться их умиротворением.',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  onPressed: () => _togglePlayback(audioPath),
                 ),
+                SizedBox(height: 20),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: natureTracks.length,
+                  itemBuilder: (context, index) {
+                    final title = natureTracks[index]['title']!;
+                    final audioPath = natureTracks[index]['path']!;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                      child: Card(
+                        color: Colors.white.withOpacity(0.9),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        elevation: 5,
+                        child: ListTile(
+                          leading: Icon(Icons.music_note, color: Colors.blue.shade700),
+                          title: Text(
+                            title,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.blue.shade700,
+                            ),
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(
+                              _isPlaying && _currentPath == audioPath
+                                  ? Icons.pause_circle_filled
+                                  : Icons.play_circle_filled,
+                              color: Colors.blue.shade700,
+                              size: 30,
+                            ),
+                            onPressed: () => _togglePlayback(audioPath),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: AppBar(
+              title: Text(
+                'Звуки природы',
+                style: TextStyle(color: Colors.white),
               ),
-            );
-          },
-        ),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              iconTheme: IconThemeData(color: Colors.white),
+            ),
+          ),
+        ],
       ),
     );
   }
