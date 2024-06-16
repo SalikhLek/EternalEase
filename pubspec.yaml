@@ -66,6 +66,10 @@ flutter:
     - assets/images/affirmation.png
     - assets/images/nature.png
     - assets/images/yoga.png
+    - assets/images/muscle1.png
+    - assets/images/relaxation.png
+    - assets/images/flexibility1.png
+    - assets/images/stress.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see
