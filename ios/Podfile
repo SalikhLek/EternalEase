@@ -1,0 +1,23 @@
+platform :ios, '10.0'
+
+target 'Runner' do
+  use_frameworks!
+
+  # Pods for Runner
+  pod 'Firebase/Core'
+  # Добавьте другие необходимые зависимости здесь
+
+  # Подключение плагинов Flutter
+  if File.exist?(File.join(File.dirname(__FILE__), 'Flutter', 'flutter_export_environment.sh'))
+    flutter_root = File.expand_path('..', `which flutter`)
+    load File.join('/Users/salikh/development/flutter','packages','flutter_tools','bin','podhelper.rb')
+  end
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
+    end
+  end
+end

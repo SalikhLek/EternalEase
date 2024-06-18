@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/quote.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class QuoteItem extends StatelessWidget {
   final Quote quote;
@@ -9,48 +8,31 @@ class QuoteItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl = 'https://source.unsplash.com/random/800x600?sig=${quote.id}'; // Использование уникального параметра
-
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: Card(
-        elevation: 5,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CachedNetworkImage(
-              imageUrl: imageUrl,
-              placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-              errorWidget: (context, url, error) => Icon(Icons.error),
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: 200,
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            quote.quote,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontStyle: FontStyle.italic,
             ),
-            Padding(
-              padding: EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    quote.quote,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    '- ${quote.author}',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                ],
-              ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 20),
+          Text(
+            '- ${quote.author}',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
-          ],
-        ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }
